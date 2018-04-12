@@ -24,8 +24,8 @@ export class AppComponent implements OnInit {
   keyPress($event) {
     if ($event.keyCode === 13) {
       this.status = 'enter';
-      $event.target.value = '';
       this.webSocketService.sendMessage($event.target.value);
+      $event.target.value = '';
     } else {
       this.status = $event.keyCode;
     }
