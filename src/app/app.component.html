@@ -1,11 +1,8 @@
-{{status}}
 
   <div class="row2x1">
-    <div class="chat-area">
+    <app-chat-area></app-chat-area>
+    <app-user-list>
 
-    </div>
-    <div class="users">
-      <div *ngFor="let user of users$ | async">{{user}}</div>
-    </div>
+    </app-user-list>
   </div>
   <input class="chat-input" (keypress)="keyPress($event)"/>

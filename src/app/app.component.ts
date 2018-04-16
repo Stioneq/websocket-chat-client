@@ -10,14 +10,13 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent implements OnInit {
   title = 'app';
   status = '';
-  users$: Observable<string>;
+
 
   constructor(private webSocketService: WebsocketService) {
   }
 
   ngOnInit(): void {
     this.webSocketService.connect();
-    this.users$ = this.webSocketService.getUsers$();
   }
 
 
