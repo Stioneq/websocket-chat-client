@@ -1,6 +1,6 @@
 export class UserEvent {
   name: string;
-  event: EventType
+  event: EventType;
 }
 export enum EventType {
   JOIN, LOGOUT

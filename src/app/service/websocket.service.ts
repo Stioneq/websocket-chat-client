@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Message} from '../model/message';
 import {EventType, UserEvent} from '../model/user-event';
+import {UserInfoService} from './user-info.service';
 
 
 @Injectable()
@@ -12,29 +13,35 @@ export class WebsocketService {
   private userSubject$: Subject<Array<string>> = new Subject<Array<string>>();
   private userEventSubject$: Subject<UserEvent> = new Subject<UserEvent>();
   private messageSubject$: Subject<Message> = new Subject<Message>();
+  private isSocketOpened = false;
 
-  constructor() {
+  constructor(private userInfoService: UserInfoService) {
   }
 
   connect() {
-    this.socket = new WebSocket('ws://localhost:8080/ws');
-    this.socket.binaryType = 'arraybuffer';
-    this.socket.onclose = (event) => this.onClose(event);
-    this.socket.onmessage = (event) => this.onMessage(event);
-    this.socket.onopen = () => this.onOpen();
+    this.userInfoService.getUserInfo().subscribe(val => {
+      this.socket = new WebSocket('ws://localhost:8080/ws');
+      this.socket.binaryType = 'arraybuffer';
+      this.socket.onclose = (event) => this.onClose(event);
+      this.socket.onmessage = (event) => this.onMessage(event);
+      this.socket.onopen = () => this.onOpen();
+    });
   }
 
   sendMessage(text) {
-    console.log('Send ' + text);
-    const msg = new ChatMessage();
-    msg.setContent(text);
-    msg.setType(ChatMessage.MessageType.SEND);
-    msg.setSender('stioneq');
-    this.socket.send(msg.serializeBinary());
+    if (this.isSocketOpened) {
+      console.log('Send ' + text);
+      const msg = new ChatMessage();
+      msg.setContent(text);
+      msg.setType(ChatMessage.MessageType.SEND);
+      //msg.setSender(this.userInfoService.getUserInfo().n);
+      this.socket.send(msg.serializeBinary());
+    }
   }
 
   private onClose(event: any) {
     console.log('Closed');
+    this.isSocketOpened = false;
   }
 
   private onMessage(event: any) {
@@ -53,6 +60,7 @@ export class WebsocketService {
   }
 
   private onOpen() {
+    this.isSocketOpened = true;
     console.log('Connected');
     const msg = new ChatMessage();
     msg.setType(ChatMessage.MessageType.JOIN);
@@ -76,7 +84,12 @@ export class WebsocketService {
   getMessages$() {
     return this.messageSubject$;
   }
-  getUserEvent$(){
+
+  getUserEvent$() {
     return this.userEventSubject$;
+  }
+
+  isOpened() {
+    return this.isSocketOpened;
   }
 }

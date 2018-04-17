@@ -6,3 +6,4 @@
     </app-user-list>
   </div>
   <input class="chat-input" (keypress)="keyPress($event)"/>
+  <div class="progress" *ngIf="!isSocketOpen"></div>

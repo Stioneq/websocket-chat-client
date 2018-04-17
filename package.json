@@ -12,7 +12,8 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.2.0",
+    "@angular/animations": "^5.2.10",
+    "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
@@ -23,10 +24,10 @@
     "@angular/router": "^5.2.0",
     "@types/protobufjs": "^6.0.0",
     "core-js": "^2.4.1",
+    "google-protobuf": "latest",
     "protobufjs": "~6.8.6",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
-    "google-protobuf": "latest"
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

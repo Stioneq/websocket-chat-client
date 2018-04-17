@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {WebsocketService} from './service/websocket.service';
-import {Observable} from 'rxjs/Observable';
+import {UserInfoComponent} from './component/user-info/user-info.component';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +10,14 @@ import {Observable} from 'rxjs/Observable';
 export class AppComponent implements OnInit {
   title = 'app';
   status = '';
-
+  isSocketOpen = this.webSocketService.isOpened();
 
   constructor(private webSocketService: WebsocketService) {
   }
 
   ngOnInit(): void {
     this.webSocketService.connect();
+
   }
 
 
@@ -29,4 +30,6 @@ export class AppComponent implements OnInit {
       this.status = $event.keyCode;
     }
   }
+
+
 }
