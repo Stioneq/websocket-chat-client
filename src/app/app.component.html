@@ -1,9 +1,13 @@
 
-  <div class="row2x1">
-    <app-chat-area></app-chat-area>
-    <app-user-list>
+<div *ngIf="userInfo">
+<div class="row2x1">
+  <app-chat-area></app-chat-area>
+  <app-user-list>
 
-    </app-user-list>
-  </div>
-  <input class="chat-input" (keypress)="keyPress($event)"/>
-  <div class="progress" *ngIf="!isSocketOpen"></div>
+  </app-user-list>
+</div>
+<input class="chat-input" (keypress)="keyPress($event)"/>-->
+</div>
+<app-user-info *ngIf="!userInfo"></app-user-info>
+<!--<app-progress *ngIf="!(isSocketOpen | async)"></app-progress>-->
+

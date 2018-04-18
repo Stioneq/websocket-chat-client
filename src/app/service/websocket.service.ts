@@ -5,46 +5,50 @@ import {Subject} from 'rxjs/Subject';
 import {Message} from '../model/message';
 import {EventType, UserEvent} from '../model/user-event';
 import {UserInfoService} from './user-info.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {filter} from 'rxjs/operators';
 
 
 @Injectable()
 export class WebsocketService {
   private socket;
-  private userSubject$: Subject<Array<string>> = new Subject<Array<string>>();
-  private userEventSubject$: Subject<UserEvent> = new Subject<UserEvent>();
-  private messageSubject$: Subject<Message> = new Subject<Message>();
-  private isSocketOpened = false;
+  private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private messages$: Subject<ChatMessage> = new Subject<ChatMessage>();
 
   constructor(private userInfoService: UserInfoService) {
   }
 
-  connect() {
-    this.userInfoService.getUserInfo().subscribe(val => {
-      this.socket = new WebSocket('ws://localhost:8080/ws');
-      this.socket.binaryType = 'arraybuffer';
-      this.socket.onclose = (event) => this.onClose(event);
-      this.socket.onmessage = (event) => this.onMessage(event);
-      this.socket.onopen = () => this.onOpen();
-    });
+  ws$() {
+    console.log('Create observable');
+    this.socket = new WebSocket('ws://localhost:8080/ws');
+    this.socket.binaryType = 'arraybuffer';
+    this.socket.onclose = () => this.onClose();
+    this.socket.onmessage = (event) => {
+      this.messages$.next(this.getMessage(event));
+    };
+    this.socket.onopen = () => this.connected$.next(true);
+    this.socket.onerror = (err) => this.onError(err);
   }
 
-  sendMessage(text) {
-    if (this.isSocketOpened) {
-      console.log('Send ' + text);
-      const msg = new ChatMessage();
-      msg.setContent(text);
-      msg.setType(ChatMessage.MessageType.SEND);
-      //msg.setSender(this.userInfoService.getUserInfo().n);
+  sendMessage(msg: ChatMessage) {
+    if (this.isOpened()) {
       this.socket.send(msg.serializeBinary());
     }
   }
 
-  private onClose(event: any) {
-    console.log('Closed');
-    this.isSocketOpened = false;
+  private onClose() {
+    if (this.isOpened()) {
+      console.log('Closed');
+      this.connected$.next(false);
+      this.reconnect();
+    }
   }
 
-  private onMessage(event: any) {
+  private getMessage(event: any): ChatMessage {
+    return ChatMessage.deserializeBinary(new Uint8Array(event.data));
+  }
+
+  /*private onMessage(event: any) {
     const msg = ChatMessage.deserializeBinary(new Uint8Array(event.data));
     if (msg.getType() === ChatMessage.MessageType.GET_USERS) {
       this.userSubject$.next(msg.getContent().split(','));
@@ -57,39 +61,65 @@ export class WebsocketService {
       });
     }
     console.log(event.data);
-  }
+  }*/
 
-  private onOpen() {
-    this.isSocketOpened = true;
-    console.log('Connected');
-    const msg = new ChatMessage();
-    msg.setType(ChatMessage.MessageType.JOIN);
-    msg.setSender('stioneq');
-    this.socket.send(msg.serializeBinary());
-    this.getUsers();
-  }
+  /*  private onOpen() {
+      this.isSocketOpened$.next(true);
+      this.userInfoService.getUserInfo().subscribe(val => {
+        console.log('Connected');
+        const msg = new ChatMessage();
+        msg.setType(ChatMessage.MessageType.JOIN);
+        msg.setSender('stioneq');
+        this.socket.send(msg.serializeBinary());
+        this.getUsers();
+      });
+    }*/
 
   private getUsers() {
-    const msg = new ChatMessage();
-    msg.setType(ChatMessage.MessageType.GET_USERS);
-    msg.setSender('stioneq');
-    this.socket.send(msg.serializeBinary());
+    if (this.isOpened()) {
+      const msg = new ChatMessage();
+      msg.setType(ChatMessage.MessageType.GET_USERS);
+      msg.setSender('stioneq');
+      this.socket.send(msg.serializeBinary());
+    }
   }
 
 
-  getUsers$(): Observable<Array<string>> {
-    return this.userSubject$;
+  getUsers$(): Observable<ChatMessage> {
+    return this.messages$.pipe(filter(msg => msg.getType() === ChatMessage.MessageType.GET_USERS));
   }
 
   getMessages$() {
-    return this.messageSubject$;
+    return this.messages$.pipe(filter(msg => msg.getType() === ChatMessage.MessageType.SEND));
   }
 
   getUserEvent$() {
-    return this.userEventSubject$;
+    return this.messages$
+      .pipe(filter(msg => msg.getType() === ChatMessage.MessageType.JOIN || msg.getType() === ChatMessage.MessageType.LOGOUT));
+  }
+  /*
+
+    private isOpened() {
+      return this.isSocketOpened$.getValue();
+    }
+
+    isOpened$() {
+      return this.isSocketOpened$;
+    }
+  */
+
+  private onError(err: any) {
+    if (this.socket.readyState !== 1) {
+      this.connected$.next(false);
+      this.reconnect();
+    }
   }
 
-  isOpened() {
-    return this.isSocketOpened;
+  private reconnect() {
+    setTimeout(() => this.ws$(), 3000);
+  }
+
+  private isOpened() {
+    return this.connected$.getValue();
   }
 }

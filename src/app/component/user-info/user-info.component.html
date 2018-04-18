@@ -1,1 +1,8 @@
-<p>hello world</p>
+<div class="wrapper" (click)="cancel()" *ngIf="showDialog">
+  <div class="input-dialog" (click)="$event.stopPropagation()">
+
+    <span class="title">Enter user information: </span>
+    <input placeholder="Username" #name class="username text" type="text">
+    <button class="ok-btn" (click)="ok()">Enter</button>
+  </div>
+</div>

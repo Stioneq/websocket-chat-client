@@ -10,6 +10,7 @@ import {UserInfoComponent} from './component/user-info/user-info.component';
 import {LocalStorageService} from './service/local-storage.service';
 import {UserInfoService} from './service/user-info.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { ProgressComponent } from './component/progress/progress.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     AppComponent,
     UserListComponent,
     ChatAreaComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    ProgressComponent
   ],
   imports: [
     BrowserModule, HttpClientModule

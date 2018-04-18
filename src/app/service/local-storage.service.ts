@@ -2,13 +2,20 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {filter, map} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class LocalStorageService {
 
-  private subject: Subject<[string, string]> = new Subject<[string, string]>();
+  private subject: ReplaySubject<[string, string]> = new ReplaySubject<[string, string]>(20);
 
   constructor() {
+    for(let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const item = localStorage.getItem(key);
+      console.log(item);
+      this.subject.next([key, item]);
+    }
   }
 
 
