@@ -97,6 +97,7 @@ export class WebsocketService {
     return this.messages$
       .pipe(filter(msg => msg.getType() === ChatMessage.MessageType.JOIN || msg.getType() === ChatMessage.MessageType.LOGOUT));
   }
+
   /*
 
     private isOpened() {
@@ -122,4 +123,9 @@ export class WebsocketService {
   private isOpened() {
     return this.connected$.getValue();
   }
+
+  getConnected$(): Observable<boolean> {
+    return this.connected$;
+  }
+
 }

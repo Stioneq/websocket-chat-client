@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserInfo} from '../model/user-info';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
@@ -12,8 +11,7 @@ export class UserInfoService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getUserInfo(): Observable<UserInfo> {
-    //this.userInfo = <Observable<UserInfo>>this.httpClient.get('http://localhost:8080/api/userInfo');
+  getUserInfo(): BehaviorSubject<UserInfo> {
     return this.userInfo;
   }
 

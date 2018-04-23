@@ -1,0 +1,12 @@
+[
+  {
+    "shortcut": "/w %1 %2",
+    "tooltip" : "/w <username> <message> - to send private message",
+    "action" : ""
+  },
+  {
+    "shortcut": "/logout",
+    "tooltip" : "/logout - to logout from chat",
+    "action" : ""
+  }
+]

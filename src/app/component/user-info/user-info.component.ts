@@ -10,7 +10,7 @@ import {UserInfoService} from '../../service/user-info.service';
 export class UserInfoComponent implements OnInit {
   showDialog = true;
 
-  @ViewChild("name") nameInput;
+  @ViewChild('name') nameInput;
 
   constructor(private userInfoService: UserInfoService) {
   }
@@ -23,7 +23,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   ok() {
-    this.userInfoService.setUserInfo({name: this.nameInput.value, icon: ''});
+    this.userInfoService.setUserInfo({name: this.nameInput.nativeElement.value, icon: ''});
     this.showDialog = false;
   }
 

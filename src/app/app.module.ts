@@ -11,6 +11,9 @@ import {LocalStorageService} from './service/local-storage.service';
 import {UserInfoService} from './service/user-info.service';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { ProgressComponent } from './component/progress/progress.component';
+import { ChatInputComponent } from './component/chat-input/chat-input.component';
+import {TooltipService} from './service/tooltip.service';
+import {MessageActionService} from './service/message-action.service';
 
 
 @NgModule({
@@ -19,12 +22,13 @@ import { ProgressComponent } from './component/progress/progress.component';
     UserListComponent,
     ChatAreaComponent,
     UserInfoComponent,
-    ProgressComponent
+    ProgressComponent,
+    ChatInputComponent
   ],
   imports: [
     BrowserModule, HttpClientModule
   ],
-  providers: [WebsocketService, LocalStorageService, UserInfoService],
+  providers: [WebsocketService, LocalStorageService, TooltipService, UserInfoService, MessageActionService],
   bootstrap: [AppComponent],
   entryComponents: [UserInfoComponent]
 })
