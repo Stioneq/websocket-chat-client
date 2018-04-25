@@ -3,8 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {MessageAction} from '../model/message-action';
 import {Observable} from 'rxjs/Observable';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {merge, mergeMap, publishReplay, refCount} from 'rxjs/operators';
-import {mergeMap} from 'rxjs/operator/mergeMap';
 
 @Injectable()
 export class MessageActionService {
@@ -19,14 +17,14 @@ export class MessageActionService {
   getActions(): Observable<MessageAction[]> {
 
     if (!this.actions) {
-      this.actions = this.httpClient.get<MessageAction[]>('./assets/json/actions.json').pipe(publishReplay(1), refCount());
+      //this.actions = this.httpClient.get<MessageAction[]>('./assets/json/actions.json').pipe(publishReplay(1), refCount());
     }
     return this.actions;
 
   }
 
-  findActionsByText(value: any): Observable<MessageAction> {
+  findActionsByText(value: any): Observable<MessageAction[]> {
     console.log(value);
-    return this.getActions().pipe(mergeMap(a => a));
+    return this.getActions();
   }
 }

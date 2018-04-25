@@ -1,4 +1,4 @@
 <div class="input-container">
-  <input class="chat-input" #input/>
+  <input class="chat-input" (keypress)="keyPress($event)" #input/>
   <div class="input-tooltip" *ngIf="tooltipText" #tooltip>{{tooltipText}}</div>
 </div>

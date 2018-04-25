@@ -9,5 +9,5 @@
 <app-chat-input></app-chat-input>
 </div>
 <app-user-info *ngIf="!userInfo"></app-user-info>
-<!--<app-progress *ngIf="!(isSocketOpen | async)"></app-progress>-->
+<app-progress [count]="progressCount" *ngIf="!(connected$ | async)"></app-progress>
 

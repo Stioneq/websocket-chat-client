@@ -14,7 +14,7 @@ export class TooltipService {
   }
 
   get(value: any) {
-    return this.messageActionService.findActionsByText(value).pipe(map(action => action.tooltip));
+    return this.messageActionService.findActionsByText(value);
   }
 
 }

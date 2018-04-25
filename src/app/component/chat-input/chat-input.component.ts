@@ -23,18 +23,18 @@ export class ChatInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    fromEvent(this.input.nativeElement, 'keypress').pipe(
+    /*fromEvent(this.input.nativeElement, 'keypress').pipe(
       debounceTime(100),
       map(event => event.target.value),
     switchMap(value => this.tooltipService.get(value))).subscribe((result) => {
       console.log(result);
       this.tooltipText = result;
-    });
+    });*/
   }
 
   keyPress($event) {
     if ($event.keyCode === 13) {
-      this.webSocketService.sendMessage(createSendMessage($event.target.value, this.userInfoService.getUserInfo().getValue().name, ''));
+      this.webSocketService.sendMessage(createSendMessage($event.target.value, 'admin', ''));
       $event.target.value = '';
     } else {
     }

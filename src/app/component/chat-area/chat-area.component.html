@@ -2,8 +2,8 @@
   <span class="message-date">({{msg.date | date:'hh:mm:ss'}})</span>
 
 
-  <span *ngIf="!msg.isPrivate" class="sender-name">{{msg.sender}}: </span>
-  <span *ngIf="msg.isPrivate" class="sender-name private-msg">{{msg.sender}} whispered to you: </span>
+  <span *ngIf="!msg.isPrivate" class="sender-name">{{msg.sender}}:&nbsp;</span>
+  <span *ngIf="msg.isPrivate" class="sender-name private-msg">{{msg.sender}} whispered to you:&nbsp;</span>
 
   <span class="content">{{msg.content}}</span>
 </div>

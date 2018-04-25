@@ -9,11 +9,12 @@ import {ChatAreaComponent} from './component/chat-area/chat-area.component';
 import {UserInfoComponent} from './component/user-info/user-info.component';
 import {LocalStorageService} from './service/local-storage.service';
 import {UserInfoService} from './service/user-info.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import { ProgressComponent } from './component/progress/progress.component';
 import { ChatInputComponent } from './component/chat-input/chat-input.component';
 import {TooltipService} from './service/tooltip.service';
 import {MessageActionService} from './service/message-action.service';
+import {AuthInterceptor} from './interceptor/auth.interceptor';
 
 
 @NgModule({
@@ -28,7 +29,13 @@ import {MessageActionService} from './service/message-action.service';
   imports: [
     BrowserModule, HttpClientModule
   ],
-  providers: [WebsocketService, LocalStorageService, TooltipService, UserInfoService, MessageActionService],
+  providers: [WebsocketService, LocalStorageService, TooltipService, UserInfoService, MessageActionService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [UserInfoComponent]
 })
