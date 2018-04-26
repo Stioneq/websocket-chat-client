@@ -7,11 +7,15 @@ import {Observable} from 'rxjs/Observable';
 import {filter, switchMap, take} from 'rxjs/operators';
 import {timer} from 'rxjs/observable/timer';
 import {RECONNECT_TIME} from '../utils/constants';
+import {MessageService} from './message.service';
 
 @Injectable()
 export class WebsocketService {
   private stompClient: Client;
   private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  constructor(private messageService: MessageService) {
+  }
 
   connect() {
     const ws = new SockJS('http://localhost:8080/ws');
@@ -20,6 +24,7 @@ export class WebsocketService {
     this.stompClient.connect({Authorization: `Basic ${btoa('admin:admin')}`}, (frame) => {
       console.log(`connected ${frame}`);
       this.connected$.next(true);
+      this.listenMessages();
     }, (err) => {
       this.connected$.next(false);
       timer(RECONNECT_TIME).pipe(take(1)).subscribe(
@@ -46,14 +51,15 @@ export class WebsocketService {
     })));
   }
 
-  getMessages$(): Observable<ChatMessage> {
-    return this.getConnected$().pipe(filter(a => a), switchMap(a => new Observable((observer) => {
-      this.stompClient.subscribe('/topic/chat/message/public', (message) => {
-        observer.next(JSON.parse(message.body));
-      });
-      this.stompClient.subscribe('/topic/chat/message/private/admin', (message) => {
-        observer.next(JSON.parse(message.body));
-      });
-    })));
+  private listenMessages() {
+    this.stompClient.subscribe('/topic/chat/message/public', (message) => {
+      const msg = JSON.parse(message.body);
+
+      this.messageService.notifyMessage({type: 'public', content: msg.content, date: new Date(), sender: msg.sender});
+    });
+    this.stompClient.subscribe('/topic/chat/message/private/admin', (message) => {
+      const msg = JSON.parse(message.body);
+      this.messageService.notifyMessage({type: 'private', content: msg.content, date: new Date(), sender: msg.sender});
+    });
   }
 }

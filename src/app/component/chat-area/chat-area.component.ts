@@ -4,6 +4,7 @@ import {WebsocketService} from '../../service/websocket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ChatMessage} from '../../model/chatmessage';
 import {map} from 'rxjs/operators';
+import {MessageService} from '../../service/message.service';
 
 @Component({
   selector: 'app-chat-area',
@@ -11,21 +12,17 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./chat-area.component.styl']
 })
 export class ChatAreaComponent implements OnInit, OnDestroy {
-  private messages: Array<Message> = [];
+  messages: Array<Message> = [];
   private messageSubscription: Subscription;
 
-  constructor(private websocketService: WebsocketService) {
+  constructor(private messageService: MessageService) {
   }
 
   ngOnInit() {
-     this.messageSubscription = this.websocketService.getMessages$()
-       .pipe(map<ChatMessage, Message>(msg => ({
-         content: msg.content,
-         sender: msg.sender,
-         isPrivate: !!msg.receiver,
-         date: new Date()
-       })))
-       .subscribe(msg => this.messages.push(msg));
+     this.messageSubscription = this.messageService.messages$()
+       .subscribe(msg => {
+         this.messages.push(msg);
+       });
   }
 
   ngOnDestroy(): void {
