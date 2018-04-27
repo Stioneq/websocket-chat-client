@@ -1,27 +1,23 @@
-# WebsocketSample
+# Websocket chat
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+## Overview:
+Chat uses stomp protocol over sockjs as transport to communicate with server writen using Spring boot.
 
-## Development server
+## How to run:
+1) npm start 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Current functionality includes:
+1) Public message: just type word into the chat
+2) Private message: /w <username> <msg>
+3) Output of a help message: /help
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Next steps:
 
-## Build
+1) Add user-creation and integrate with existing authentication on server
+2) Customize profile(built-in user settings)
+3) Token-based authentication
+4) Integrate with Oath2 (Facebook e.g.)
+5) Channels(creation/edit)
+6) Interactive board( usecase : you can add a board to chat-area and then you can draw figures therefore other users in the current channel can see these figures)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
