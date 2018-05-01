@@ -1,13 +1,12 @@
-
-<div class="container" *ngIf="userInfo">
-<div class="row2x1">
-  <app-chat-area></app-chat-area>
-  <app-user-list>
-
-  </app-user-list>
+<header>
+  <i class="logout material-icons" *ngIf="authenticated" (click)="logout()" value="Logout">close</i>
+</header>
+<div class="content">
+  <router-outlet></router-outlet>
 </div>
-<app-chat-input></app-chat-input>
-</div>
+<!--
+
 <app-user-info *ngIf="!userInfo"></app-user-info>
 <app-progress [count]="progressCount" *ngIf="!(connected$ | async)"></app-progress>
 
+-->

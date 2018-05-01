@@ -8,24 +8,26 @@ import {filter, switchMap, take} from 'rxjs/operators';
 import {timer} from 'rxjs/observable/timer';
 import {RECONNECT_TIME} from '../utils/constants';
 import {MessageService} from './message.service';
+import {TokenService} from './token.service';
 
 @Injectable()
 export class WebsocketService {
   private stompClient: Client;
   private connected$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private tokenService: TokenService) {
   }
 
   connect() {
-    const ws = new SockJS('http://localhost:8080/ws');
+    const ws = new SockJS('http://192.168.0.106:8080/ws?access_token=' + this.tokenService.getToken());
     this.stompClient = over(ws);
 
-    this.stompClient.connect({Authorization: `Basic ${btoa('admin:admin')}`}, (frame) => {
+    this.stompClient.connect({}, (frame) => {
       console.log(`connected ${frame}`);
       this.connected$.next(true);
       this.listenMessages();
     }, (err) => {
+      console.log(err);
       this.connected$.next(false);
       timer(RECONNECT_TIME).pipe(take(1)).subscribe(
         val => this.connect()

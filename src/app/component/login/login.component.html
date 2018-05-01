@@ -1,0 +1,13 @@
+<div class="wrapper">
+  <form class="input-dialog" #loginForm = "ngForm" (submit)="login()" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+    <span class="title">Enter user information </span>
+    </div>
+    <div class="modal-content">
+    <input placeholder="Username" [(ngModel)]="username" name="username" class="username text" type="text">
+    <input placeholder="Password" [(ngModel)]="password" name="password" class="password text" type="password">
+    <span class="error" *ngIf="err">{{err}}</span>
+    <input type="submit" class="ok-btn" value="Enter"/>
+    </div>
+  </form>
+</div>

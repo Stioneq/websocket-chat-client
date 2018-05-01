@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {UserInfo} from '../../model/user-info';
-import {UserInfoService} from '../../service/user-info.service';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-user-info',
@@ -12,7 +12,7 @@ export class UserInfoComponent implements OnInit {
 
   @ViewChild('name') nameInput;
 
-  constructor(private userInfoService: UserInfoService) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -23,7 +23,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   ok() {
-    this.userInfoService.setUserInfo({name: this.nameInput.nativeElement.value, icon: ''});
+    /*this.userInfoService.setUserInfo({name: this.nameInput.nativeElement.value, icon: ''});*/
     this.showDialog = false;
   }
 

@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {createSendMessage} from '../../utils/message-utils';
 import {WebsocketService} from '../../service/websocket.service';
-import {UserInfoService} from '../../service/user-info.service';
 import {MessageActionsLocatorService} from '../../service/message-actions-locator.service';
 
 @Component({
@@ -13,7 +11,7 @@ export class ChatInputComponent implements OnInit, AfterViewInit {
   @ViewChild('input') input: ElementRef;
   private tooltipText;
 
-  constructor(private webSocketService: WebsocketService, private userInfoService: UserInfoService, private messageActionLocator: MessageActionsLocatorService) {
+  constructor(private webSocketService: WebsocketService, private messageActionLocator: MessageActionsLocatorService) {
   }
 
   ngOnInit() {

@@ -1,0 +1,68 @@
+@import "../../../palette.styl"
+
+.wrapper
+  position absolute
+  top: 0
+  left: 0
+  width: 100%
+
+  height: 100%
+  display flex
+  background #00000050
+  justify-content: center
+  align-items: center
+  .input-dialog
+    box-sizing padding-box
+    display: flex
+    flex-direction: column
+    align-items: center
+    background $primary-color-light
+    .modal-header
+      width: 100%;
+      text-align: center
+      padding-top: 20px;
+      padding-bottom: 20px;
+      background $primary-color
+      .title
+        font-size: 1.2em
+        margin-top: 20px
+        text-align: center
+        margin-bottom: 20px
+    .modal-content
+      align-items: center
+      display: flex
+      flex-direction column
+      .text
+        margin-top 10px
+        border: none;
+        height 50px
+
+        margin-left 10px
+        margin-right:10px
+        color: $primary-text-color
+        outline none
+        font-size: 16px;
+        background: none;
+        border-bottom: 2px solid $divider-color;
+        &::placeholder
+          color: $secondary-text-color
+      .ok-btn
+        margin-top 10px
+        width: 100px
+        height 50px
+        margin-bottom 10px
+        border none
+        color: $primary-color-text
+        background: $accent-color
+        &:hover
+          background $primary-color-dark
+      .error
+        margin-top 10px
+        color $err-text-color
+        font-weight bold
+
+
+
+
+
+

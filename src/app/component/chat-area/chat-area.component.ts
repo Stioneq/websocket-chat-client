@@ -1,9 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Message} from '../../model/message';
-import {WebsocketService} from '../../service/websocket.service';
 import {Subscription} from 'rxjs/Subscription';
-import {ChatMessage} from '../../model/chatmessage';
-import {map} from 'rxjs/operators';
 import {MessageService} from '../../service/message.service';
 
 @Component({
@@ -19,10 +16,10 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-     this.messageSubscription = this.messageService.messages$()
-       .subscribe(msg => {
-         this.messages.push(msg);
-       });
+    this.messageSubscription = this.messageService.messages$()
+      .subscribe(msg => {
+        this.messages.push(msg);
+      });
   }
 
   ngOnDestroy(): void {

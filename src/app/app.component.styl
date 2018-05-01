@@ -1,25 +1,36 @@
+@import "../palette.styl"
 
 :host
+  display flex
   height 100%
   width 100%
-
-  display flex
   flex-direction column
-  .container
+  header
+    background: linear-gradient(180deg, $primary-color-dark, $primary-color);
+    z-index 10
+    height 50px
+    flex-grow 0
+    display: flex
+    align-items: center;
+    justify-content: flex-end;
+    .logout
+      border-radius 50%
+      background $accent-color
+      padding 5px
+      box-sizing content-box
+      margin-right 10px
+      user-select none
+      &:hover
+        background $primary-color-dark
+      border none
+  .content
+    flex-grow: 1
+    background $primary-color-light
     display flex
-    flex-grow 1
+    height 100%
+    width 100%
     flex-direction column
-    .row2x1
-      flex-grow 1
-      display flex
-      flex-direction row
-      app-chat-area
-        flex-grow 1
-        background: linear-gradient(90deg,#000,#333);
-      app-user-list
-        box-shadow: -1px 0px 4px 2px #999
-        width 200px
-        max-width 200px
-        background #333
+
+
 
 

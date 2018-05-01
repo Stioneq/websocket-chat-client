@@ -8,7 +8,6 @@ import {UserListComponent} from './component/user-list/user-list.component';
 import {ChatAreaComponent} from './component/chat-area/chat-area.component';
 import {UserInfoComponent} from './component/user-info/user-info.component';
 import {LocalStorageService} from './service/local-storage.service';
-import {UserInfoService} from './service/user-info.service';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ProgressComponent} from './component/progress/progress.component';
 import {ChatInputComponent} from './component/chat-input/chat-input.component';
@@ -24,6 +23,17 @@ import {PrivateMessageComponent} from './component/chat-area/message/private-mes
 import {PublicMessageComponent} from './component/chat-area/message/public-message/public-message.component';
 import {MessageViewDirective} from './component/chat-area/message/message-view.directive';
 import {MessageViewComponent} from './component/chat-area/message/message-view.component';
+import {AuthService} from './service/auth.service';
+import {UserService} from './service/user.service';
+import {RouterModule} from '@angular/router';
+import {ROUTES} from './app.routes';
+import { ChatComponent } from './component/chat/chat.component';
+import { LoginComponent } from './component/login/login.component';
+import {FormsModule} from '@angular/forms';
+import {TokenService} from './service/token.service';
+import {LoginGuard} from './guard/login.guard';
+import {AuthGuard} from './guard/auth.guard';
+
 
 
 @NgModule({
@@ -39,17 +49,25 @@ import {MessageViewComponent} from './component/chat-area/message/message-view.c
     SystemMessageComponent,
     PrivateMessageComponent,
     PublicMessageComponent,
+    ChatComponent,
+    LoginComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule
+    BrowserModule, HttpClientModule,
+    RouterModule.forRoot(ROUTES),
+    FormsModule
   ],
   entryComponents: [SystemMessageComponent,
     PrivateMessageComponent,
     PublicMessageComponent],
   providers: [WebsocketService, LocalStorageService,
-    UserInfoService,
     MessageService,
+    AuthService,
+    TokenService,
+    AuthGuard,
+    LoginGuard,
     DefaultMessageAction,
+    UserService,
     {
       provide: 'MessageAction',
       useClass: HelpMessageAction,
