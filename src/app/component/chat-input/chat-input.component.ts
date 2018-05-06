@@ -32,7 +32,6 @@ export class ChatInputComponent implements OnInit, AfterViewInit {
     if ($event.keyCode === 13) {
       const value = $event.target.value;
       this.messageActionLocator.getActionByMsg(value).action(value);
-      //this.webSocketService.sendMessage(createSendMessage(value, 'admin', ''));
       $event.target.value = '';
     } else {
     }

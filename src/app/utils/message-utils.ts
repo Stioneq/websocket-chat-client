@@ -1,5 +1,4 @@
-import {ChatMessage, MessageType} from '../model/chatmessage';
-
+import {Message} from '../model/message';
 
 
 const sender = (msg, _sender) => {
@@ -16,8 +15,9 @@ const type = (msg, _type) => {
   msg.type = _type;
   return msg;
 };
-export function createSendMessage(text, _sender, _receiver) {
-  const msg = new ChatMessage();
+
+export function createSendMessage(text, _sender, _receiver, _type) {
+  const msg = new Message();
   msg.content = text;
-  return type(sender(receiver(msg, _receiver), _sender), MessageType.SEND);
+  return type(sender(receiver(msg, _receiver), _sender), _type);
 }

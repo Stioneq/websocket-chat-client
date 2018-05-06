@@ -1,21 +1,17 @@
 @import "../../../palette.styl"
 :host
   display flex
+  flex-wrap nowrap
+  align-items start
+  align-content start
+  overflow-y auto
+  background: linear-gradient(90deg,$primary-color-light,$primary-color-light);
   flex-direction column
-  .message-box
-    display: flex
-    flex-grow 0
-    flex-wrap wrap
-    flex-direction row
-    .message-date
-      font-size 10px
-    .sender-name, .message-date, .content
-      color: #c8c8ff;
-      font-size: 16px;
-    .sender-name
-      font-weight: bold;
-      &.private-msg
-        color #934cff
+  app-message-view
+    &.own-message
+      align-self flex-start
+    &.foreign-message
+      align-self flex-end
 
 
 

@@ -3,7 +3,6 @@ import {MessageViewDirective} from './message-view.directive';
 import {Message} from '../../../model/message';
 import {MessageView} from './message-view';
 import {getMessageViewType} from './message-type-converter.utils';
-import {PublicMessageComponent} from './public-message/public-message.component';
 
 @Component({
   selector: 'app-message-view',
@@ -13,7 +12,9 @@ import {PublicMessageComponent} from './public-message/public-message.component'
 export class MessageViewComponent implements OnInit {
   @Input('msg') msg: Message;
   @ViewChild(MessageViewDirective) mvHost: MessageViewDirective;
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  }
 
   ngOnInit() {
     this.loadComponent();
@@ -28,4 +29,6 @@ export class MessageViewComponent implements OnInit {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     (<MessageView>componentRef.instance).msg = this.msg;
   }
+
+
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {TokenService} from './token.service';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -10,11 +11,11 @@ export class AuthService {
 
 
   signUp(username: string, password: string) {
-    return this.http.post('http://192.168.0.106:8080/user/sign-up', {username: username, password: password});
+    return this.http.post(environment.url + '/user/sign-up', {username: username, password: password});
   }
 
   login(username: string, password: string) {
-    return this.http.post('http://192.168.0.106:8080/user/login', {username: username, password: password}, {responseType: 'text'});
+    return this.http.post(environment.url + '/user/login', {username: username, password: password}, {responseType: 'text'});
   }
 
   logout() {

@@ -5,9 +5,12 @@ import {PrivateMessageComponent} from './private-message/private-message.compone
 import {SystemMessageComponent} from './system-message/system-message.component';
 
 const MAP = {
-  'public' : PublicMessageComponent,
-  'private' : PrivateMessageComponent,
-  'system' : SystemMessageComponent
+  'public': PublicMessageComponent,
+  'private': PrivateMessageComponent,
+  'system': SystemMessageComponent
 };
 
 export const getMessageViewType = (msgType: string) => MAP[msgType];
+
+
+export const isDisplayableType = (msgType: string) => !!MAP[msgType];

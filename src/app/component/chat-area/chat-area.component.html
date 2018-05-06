@@ -1,6 +1,3 @@
-<div class="message-box" *ngFor="let msg of messages" [ngSwitch]="msg.type">
+<app-message-view *ngFor="let msg of messages" [ngClass]="{'foreign-message':isForeign(msg)}"[msg]="msg"></app-message-view>
 
 
-  <app-message-view [msg]="msg"></app-message-view>
-
-</div>

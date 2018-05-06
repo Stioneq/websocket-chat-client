@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {Client, over} from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ChatMessage} from '../model/chatmessage';
 import {Observable} from 'rxjs/Observable';
 import {filter, switchMap, take} from 'rxjs/operators';
 import {timer} from 'rxjs/observable/timer';
 import {RECONNECT_TIME} from '../utils/constants';
 import {MessageService} from './message.service';
 import {TokenService} from './token.service';
+import {environment} from '../../environments/environment';
+import {Message} from '../model/message';
 
 @Injectable()
 export class WebsocketService {
@@ -19,7 +20,7 @@ export class WebsocketService {
   }
 
   connect() {
-    const ws = new SockJS('http://192.168.0.106:8080/ws?access_token=' + this.tokenService.getToken());
+    const ws = new SockJS(environment.url + '/ws?access_token=' + this.tokenService.getToken());
     this.stompClient = over(ws);
 
     this.stompClient.connect({}, (frame) => {
@@ -40,7 +41,7 @@ export class WebsocketService {
     return this.connected$;
   }
 
-  sendMessage(chatMessage: ChatMessage) {
+  sendMessage(chatMessage: Message) {
     this.stompClient.send('/app/chat/message/public', {}, JSON.stringify(chatMessage));
   }
 
@@ -56,12 +57,15 @@ export class WebsocketService {
   private listenMessages() {
     this.stompClient.subscribe('/topic/chat/message/public', (message) => {
       const msg = JSON.parse(message.body);
-
       this.messageService.notifyMessage({type: 'public', content: msg.content, date: new Date(), sender: msg.sender});
     });
     this.stompClient.subscribe('/topic/chat/message/private/admin', (message) => {
       const msg = JSON.parse(message.body);
       this.messageService.notifyMessage({type: 'private', content: msg.content, date: new Date(), sender: msg.sender});
+    });
+    this.stompClient.subscribe('/topic/chat/events/public', (message) => {
+      const msg = JSON.parse(message.body);
+      this.messageService.notifyMessage({type: msg.type, content: msg.content, date: new Date(), sender: msg.sender});
     });
   }
 }

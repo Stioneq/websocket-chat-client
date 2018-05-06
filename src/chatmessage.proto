@@ -6,9 +6,9 @@ message ChatMessage {
   string content = 1;
   string sender = 2;
   string receiver = 3;
-  MessageType type = 4;
+  type type = 4;
 
-  enum MessageType {
+  enum type {
     JOIN = 0;
     SEND = 1;
     LOGOUT = 2;

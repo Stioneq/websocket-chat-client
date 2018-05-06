@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {Message} from '../model/message';
 import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 /**
  * This service is used to manage messages for chat-area
@@ -13,7 +15,7 @@ export class MessageService {
 
   private messagesSubject: Subject<Message> = new Subject<Message>();
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
   }
 
   /**
@@ -31,4 +33,7 @@ export class MessageService {
     return this.messagesSubject;
   }
 
+  getMessages(channelName: string, page: number, pageSize: number) {
+    return this.httpClient.get<Message[]>(environment.url + '/api/messages');
+  }
 }
